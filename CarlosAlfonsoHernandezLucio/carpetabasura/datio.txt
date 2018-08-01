@@ -1,0 +1,115 @@
+MI GUIA DE INSTALACION
+
+INSTALAR UBUNTU
+
+JAVA 1.8.181
+MAVEN 3.5.2
+SCALA 2.12
+GIT 2.17.1
+HADOOP 2.9.1
+INTELLIJ IDEA 2018.2
+DOCKER 18.06.0-CE
+DOCKER-COMPOSE 1.22.0
+SPARK 2.1.1                    port 8080
+ZEPPELIN 0.7.2                 port 9090       
+
+
+La mayoria de las instalaciones son: descargar, descomprimir, colocar variables de entorno.
+Las instalaciones quedan generalmente en ~$/usr/local/<carpeta del programa> ó en ~$/opt
+
+~$nano .bashrc           ----------------------------------------Editar y colocar las variables de entorno globales
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre/     --------------------------------EJEMPLO DE VARIABLE DE ENTORNO
+
+
+
+----------------------------------------------------------------------------------------------------------MAVEN
+wget http://www-eu.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+
+sudo tar -xvzf apache-maven-3.5.4-bin.tar.gz
+sudo mv apache-maven-3.5.4 maven
+mvn -version
+
+-----------------------------------------------------------------------------------------------------------SCALA
+sudo mkdir /home/datio/scala/
+tar -xvf scala-2.12.0.tgz -C /home/datio/scala/
+scala -version
+
+
+----------------------------------------------------------------------------------------------------------HADOOP
+wget https://dist.apache.org/repos/dist/release/hadoop/common/hadoop-2.9.1/hadoop-2.9.1-src.tar.gz
+
+tar -xzvf hadoop-2.9.1.tar.gz
+sudo mv hadoop-2.9.1 /usr/local/hadoop
+
+/usr/local/hadoop/bin/hadoop version
+hadoop version          ----------------------------------------Funciona si la variable de entorno es correcta
+
+sudo nano /usr/local/hadoop/etc/hadoop/hadoop-env.sh------------http://howto.gandasoftwarefactory.com/desarrollo-software/2014/como-instalar-apache-hadoop-ubuntu-linux-20141209/
+
+
+jps          -----------------------------------------------valida servicios que estan levantados
+
+
+
+
+
+(despues de instalar spark)zeppelin-env.sh crearlo copiando y renombrando el archivo zeppelin-env.sh.template
+y colocarle los siguientes exports:
+export MASTER=spark://luisf:7077
+export SPARK_HOME=/usr/local/spark
+export SPARK_CONF_DIR=/usr/local/spark/conf
+
+zeppelin-site.xml crearlo copiando y renormbrando el archivo zeppelin-site.xml.template aqui se cambia el puerto 8080 por el 9090
+
+
+hadoop namenode -format ---------------------------------------Formatea sistema de archivos hdfs
+hdfs dfs -ls /          ---------------------------------------Valida los directorios en hdfs
+docker image            ---------------------------------------Indica las imagenes descargadas que tenemos de docker
+docker ps -a            ---------------------------------------Visualiza los contenedores de docker que se encuentran inicializados en el equipo
+
+(despues de instalar intelliji IDEA y maven) en terminal del IDE ejecutar la sentencia 
+mvn clean install       ---------------------------------------Empaqueta el proyeto a carpeta .m2 y generara su .jar 
+
+chown -R psycho fotos/  ----------------------------------------Cambia de propietario la carpeta y todo lo que tenga
+
+
+(despues de instalar maven) descargar de drive el archivo settings.xml y colocarlo dentro de la carpeta .m2 (mismo nivel que carpeta repository)
+En Artefactory dar click en usuario y despues en engrane para generar contraseña, la cual se debeb colocar en el archivo
+settings.xml y en usuario colocar el mismo que aparece en Artefactory (todo lo que esta antes del @)
+Crear directorio (en raiz) /datio/workspace, posterior ejecutar la sentencia mvn de Arquetipo que tambien esta en drive
+
+
+Clonar proyecto kirby2 en carpeta .m2 con sentencia git hub siguiendo el pdf que se encuentra en drive
+(luisfer nos compartio una carpeta en drive con 3 archivos)
+
+
+
+-----------------------------------------------------------------------------------------Inicializar servicios
+/usr/local/hadoop/sbin/start-all.sh
+/usr/local/hadoop/sbin/stop-all.sh
+
+/usr/local/spark/sbin/start-all.sh
+/usr/local/spark/sbin/stop-all.sh
+
+/usr/local/zeppelin/bin/zeppelin-daemon.sh start
+/usr/local/zeppelin/bin/zeppelin-daemon.sh stop
+
+
+
+-----------------------------------------------------------------------------------------Abrir IDE Intelliji
+/opt/ideaIC-2018.2/idea-IC-182.3684.101/bin/idea.sh
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
+~/datio/workspace/tmp/mdco-valued-balance/mnv clean
+~/datio/workspace/tmp/mdco-valued-balance/mvn package
+~/datio/workspace/tmp/mdco-valued-balance/mvn clean install
+
+
+
+------------------------------------------------------Artefactory, Bitbooket y Jira
+https://globaldevtools.bbva.com/
+
+
+
